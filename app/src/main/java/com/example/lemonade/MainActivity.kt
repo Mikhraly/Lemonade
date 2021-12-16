@@ -15,10 +15,10 @@
  */
 package com.example.lemonade
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
@@ -32,18 +32,25 @@ class MainActivity : AppCompatActivity() {
     private val LEMONADE_STATE = "LEMONADE_STATE"
     private val LEMON_SIZE = "LEMON_SIZE"
     private val SQUEEZE_COUNT = "SQUEEZE_COUNT"
+
     // SELECT represents the "pick lemon" state
     private val SELECT = "select"
+
     // SQUEEZE represents the "squeeze lemon" state
     private val SQUEEZE = "squeeze"
+
     // DRINK represents the "drink lemonade" state
     private val DRINK = "drink"
+
     // RESTART represents the state where the lemonade has be drunk and the glass is empty
     private val RESTART = "restart"
+
     // Default the state to select
     private var lemonadeState = "select"
+
     // Default lemonSize to -1
     private var lemonSize = -1
+
     // Default the squeezeCount to -1
     private var squeezeCount = -1
 
@@ -67,10 +74,11 @@ class MainActivity : AppCompatActivity() {
         setViewElements()
         lemonImage!!.setOnClickListener {
             // TODO: call the method that handles the state when the image is clicked
+            clickLemonImage()
         }
         lemonImage!!.setOnLongClickListener {
             // TODO: replace 'false' with a call to the function that shows the squeeze count
-            false
+            showSnackbar()
         }
     }
 
@@ -95,6 +103,22 @@ class MainActivity : AppCompatActivity() {
         //  when the the image is clicked we may need to change state to the next step in the
         //  lemonade making progression (or at least make some changes to the current state in the
         //  case of squeezing the lemon). That should be done in this conditional statement
+        if (lemonadeState == "select") {
+            lemonadeState = "squeeze"
+            lemonSize = lemonTree.pick()
+            squeezeCount = 0
+        }
+        if (lemonadeState == "squeeze") {
+            squeezeCount++
+            if (--lemonSize == 0) lemonadeState = "drink"
+        }
+        if (lemonadeState == "drink") {
+            lemonadeState = "restart"
+        }
+        if (lemonadeState == "restart") {
+            lemonadeState = "select"
+        }
+
 
         // TODO: When the image is clicked in the SELECT state, the state should become SQUEEZE
         //  - The lemonSize variable needs to be set using the 'pick()' method in the LemonTree class
