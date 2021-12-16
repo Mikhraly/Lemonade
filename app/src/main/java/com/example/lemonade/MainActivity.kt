@@ -114,6 +114,7 @@ class MainActivity : AppCompatActivity() {
         }
         if (lemonadeState == "drink") {
             lemonadeState = "restart"
+            lemonSize = -1
         }
         if (lemonadeState == "restart") {
             lemonadeState = "select"
